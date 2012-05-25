@@ -1,10 +1,30 @@
 <html>
+    <head>
+        <script type="text/javascript" src="/_ah/channel/jsapi"></script>
+        <script type="text/javascript">
+            function onOpened() {
+            }
+        </script>
+    </head>
     <body>
+        <script type="text/javascript">
+            channel = new goog.appengine.Channel("{{ token }}");
+            socket = channel.open();
+            socket.onopen = onOpened;
+            socket.onmessage = onMessage;
+            socket.onerror = onError;
+            socket.onclose = onClose;
+        </script>
+
         {% if user %}
             Chào {{ user.nickname() }}
-            <h2>Fellows online:</h2>
+            <h2>Online:</h2>
             <div id="online-list">
-
+            <ul>
+                {% for online in online_list %}
+                    <li>{{ online.user.nickname() }}</li>
+                {% endfor %}
+            </ul>
             </div>
         {% else %}
             <a href="{{ login_url }}">Đăng nhập</a>
