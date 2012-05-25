@@ -1,8 +1,16 @@
 <html>
     <head>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
         <script type="text/javascript" src="/_ah/channel/jsapi"></script>
-        <script type="text/javascript">
-            function onOpened() {
+        <script type-"text/javascript">
+            function onMessage(message) {
+                console.log(message);
+                msg = eval("("+message.data+")");
+                if (msg.on === 0) {
+                    $("#online-list").("#"+msg.uid).remove();
+                } else {
+                    $("#online-list").append("<li id="+msg.uid+">"+msg.nickname+"</li>");
+                }
             }
         </script>
     </head>
@@ -10,23 +18,20 @@
         <script type="text/javascript">
             channel = new goog.appengine.Channel("{{ token }}");
             socket = channel.open();
-            socket.onopen = onOpened;
+            /*socket.onopen = onOpened;*/
             socket.onmessage = onMessage;
-            socket.onerror = onError;
-            socket.onclose = onClose;
+            /*socket.onclose = onClose;*/
         </script>
 
         {% if user %}
             Chào {{ user.nickname() }}
             <h2>Online:</h2>
-            <div id="online-list">
-            <ul>
-                <li>{{ user.nickname() }}</li>
+            <ul id="online-list">
+                <li id="{{ user.user_id() }}">{{ user.nickname() }}</li>
                 {% for online in online_list %}
-                    <li>{{ online.user.nickname() }}</li>
+                <li id="{{ online.user.user_id() }}">{{ online.user.nickname() }}</li>
                 {% endfor %}
             </ul>
-            </div>
         {% else %}
             <a href="{{ login_url }}">Đăng nhập</a>
         {% endif %}
