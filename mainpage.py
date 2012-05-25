@@ -7,24 +7,30 @@ import common
 
 class UserOnline(db.Model):
     user = db.UserProperty()
-    online = db.BooleanProperty()
+    online = db.IntegerProperty()
 
 class MainPage(webapp2.RequestHandler):
     def get(self):
         user = users.get_current_user()
-        online = UserOnline.all().filter("user =", user).get()
-        if not online:
-            model = UserOnline(user=user, online=True)
-            model.put();
+        if user:
+            obj = UserOnline.all().filter("user =", user).get()
+            if not obj:
+                model = UserOnline(user=user, online=1)
+                model.put();
+            else:
+                obj.online += 1
+                obj.put()
+
+            token = channel.create_channel(user.email())
+            online_list = db.GqlQuery("SELECT user FROM UserOnline WHERE online >= 1")
+            values = {
+                        "user": user,
+                        "token": token,
+                        "online_list": online_list,
+                    }
         else:
-            online.online = True
-            online.put()
-        token = channel.create_channel(user.user_id())
-        online_list = db.GqlQuery("SELECT user FROM UserOnline WHERE online = TRUE")
-        values = {
-                    "user": user,
-                    "login_url": users.create_login_url("/"),
-                    "token": token,
-                    "online_list": online_list,
-                }
+            values = {
+                        "user": user,
+                        "login_url": users.create_login_url("/"),
+                    }
         self.response.out.write(common.templateRender("main.html", values))
