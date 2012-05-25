@@ -21,6 +21,7 @@
             <h2>Online:</h2>
             <div id="online-list">
             <ul>
+                <li>{{ user.nickname() }}</li>
                 {% for online in online_list %}
                     <li>{{ online.user.nickname() }}</li>
                 {% endfor %}

@@ -17,12 +17,9 @@ class MainPage(webapp2.RequestHandler):
             if not obj:
                 model = UserOnline(user=user, online=1)
                 model.put();
-            else:
-                obj.online += 1
-                obj.put()
 
             token = channel.create_channel(user.email())
-            online_list = db.GqlQuery("SELECT user FROM UserOnline WHERE online >= 1")
+            online_list = db.GqlQuery("SELECT user FROM UserOnline WHERE online = 1 AND user != :1", user)
             values = {
                         "user": user,
                         "token": token,
