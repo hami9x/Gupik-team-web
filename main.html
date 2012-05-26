@@ -4,7 +4,6 @@
         <script type="text/javascript" src="/_ah/channel/jsapi"></script>
         <script type-"text/javascript">
             function onMessage(message) {
-                console.log(message);
                 msg = eval("("+message.data+")");
                 if (msg.on === 0) {
                     $("#online-list > #"+msg.uid).remove();
