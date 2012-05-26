@@ -7,7 +7,7 @@
                 console.log(message);
                 msg = eval("("+message.data+")");
                 if (msg.on === 0) {
-                    $("#online-list").("#"+msg.uid).remove();
+                    $("#online-list > #"+msg.uid).remove();
                 } else {
                     $("#online-list").append("<li id="+msg.uid+">"+msg.nickname+"</li>");
                 }

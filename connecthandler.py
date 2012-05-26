@@ -5,6 +5,7 @@ from google.appengine.api import users
 from google.appengine.api import channel
 from google.appengine.ext import db
 from mainpage import UserOnline
+from common import MyUser
 
 def reaction(handler, f_status_change):
     user = users.User(email = handler.request.get("from"))
@@ -13,10 +14,9 @@ def reaction(handler, f_status_change):
     model.online = f_status_change(model.online)
     model.put()
 
-    logging.info(user.user_id())
     #Now send message to client
     message = {
-                "uid": user.user_id(),
+                "uid": MyUser.create(user.email()).id,
                 "on": model.online,
             }
     if model.online:

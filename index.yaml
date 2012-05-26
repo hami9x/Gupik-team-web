@@ -10,6 +10,16 @@ indexes:
 # automatically uploaded to the admin console when you next deploy
 # your application using appcfg.py.
 
+- kind: MyUser
+  properties:
+  - name: email
+  - name: id
+
+- kind: MyUser
+  properties:
+  - name: id
+  - name: email
+
 - kind: UserOnline
   properties:
   - name: online

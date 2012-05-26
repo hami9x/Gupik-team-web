@@ -3,7 +3,8 @@ from google.appengine.api import users
 from google.appengine.api import channel
 from google.appengine.ext import db
 
-import common
+from common import templateRender
+from common import MyUser
 
 class UserOnline(db.Model):
     user = db.UserProperty()
@@ -16,7 +17,8 @@ class MainPage(webapp2.RequestHandler):
             obj = UserOnline.all().filter("user =", user).get()
             if not obj:
                 model = UserOnline(user=user, online=1)
-                model.put();
+                model.put()
+                MyUser(id = user.user_id(), email = user.email()).put()
 
             token = channel.create_channel(user.email())
             online_list = db.GqlQuery("SELECT user FROM UserOnline WHERE online = 1 AND user != :1", user)
@@ -30,4 +32,4 @@ class MainPage(webapp2.RequestHandler):
                         "user": user,
                         "login_url": users.create_login_url("/"),
                     }
-        self.response.out.write(common.templateRender("main.html", values))
+        self.response.out.write(templateRender("main.html", values))
