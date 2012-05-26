@@ -18,13 +18,13 @@ class MyUser(db.Model):
     def create(email=None, id=None):
         construct_warning = Warning("that user doesn't exist in MyUser database")
         if email != None:
-            q = db.GqlQuery("SELECT id FROM MyUser WHERE email = :1", email).get();
+            q = MyUser.all().filter("email =", email).get()
             if not q:
                 raise construct_warning
             else:
                 return MyUser(id=q.id, email=email)
         elif id != None:
-            q = db.GqlQuery("SELECT email FROM MyUser WHERE id = :1", id).get();
+            q = MyUser.all().filter("id =", id).get()
             if not q:
                 raise construct_warning
             else:
