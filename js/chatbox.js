@@ -16,6 +16,7 @@ function toLocalTime(str) {
 }
 
 function chatbox_onMessage(message) {
+    console.log("chatbox_onMessage triggered!");
     var msg = eval("("+message.data+")");
     if (msg.type !== "chatMsg") return;
     var timeStr = toLocalTime(msg.time);

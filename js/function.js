@@ -1,3 +1,14 @@
+var msgHandlers = new Array();
+    function registerMessageHandler(func) {
+        msgHandlers.push(func);
+    }
+
+    function onMessage(message) {
+        console.log("^^^");
+        for (var i=0; i<msgHandlers.length(); i++) {
+            (msgHandlers[i])(message);
+        }
+    }
 
 function addsmile(kitu)
 {
@@ -84,14 +95,3 @@ function c_style(element)
 	{
 		window.open("?chip_smilies", "", "location=no,scrollbars=yes,width=500,height=500");
 	}
-
-    var msgHandlers = new Array();
-    function registerMessageHandler(func) {
-        msgHandlers.push(func);
-    }
-
-    function onMessage() {
-        for (var i=0; i<msgHandlers.length(); i++) {
-            (msgHandlers[i])();
-        }
-    }

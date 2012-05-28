@@ -1,3 +1,4 @@
+import json
 from datetime import datetime
 import webapp2
 from google.appengine.api import users
@@ -6,6 +7,7 @@ from google.appengine.api import channel
 from google.appengine.ext import db
 
 from common import render_template
+from useronline import UserOnline
 
 class ChatMessage(db.Model):
     nickname = db.StringProperty()
@@ -14,14 +16,28 @@ class ChatMessage(db.Model):
 
 class Chatbox(webapp2.RequestHandler):
     def get(self):
+        user = users.get_current_user()
         values = {
-                "user": users.get_current_user(),
-                "login_url": users.create_login_url("/chatbox"),
-                "logout_url": users.create_logout_url("/chatbox"),
+                "user": user,
+                "online_list": UserOnline.get_online_list(),
                 "config": {
                     "height": 500,
                     },
                 }
+
+        values2 = {}
+        if user:
+            UserOnline.check_user(user)
+            token = channel.create_channel(user.email())
+            values2 = {
+                    "token": token,
+                    "logout_url": users.create_logout_url("/chatbox"),
+                }
+        else:
+            values2 = {
+                    "login_url": users.create_login_url("/chatbox"),
+                }
+        values.update(values2)
         self.response.out.write(render_template("chatbox.html", values))
 
     def post(self):
@@ -43,4 +59,4 @@ class Chatbox(webapp2.RequestHandler):
                 "content": content,
                 }
         for item in online_list:
-            channel.send_message(item.user.email(), message)
+            channel.send_message(item.user.email(), json.dumps(message))

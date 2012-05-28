@@ -3,8 +3,8 @@ import webapp2
 from google.appengine.api import users
 from google.appengine.api import channel
 from google.appengine.api import memcache
-from google.appengine.ext import db
-from mainpage import UserOnline
+
+from useronline import UserOnline
 from common import MyUser
 
 def reaction(handler, f_status_change):
@@ -23,7 +23,8 @@ def reaction(handler, f_status_change):
     if model.online:
         message["nickname"] = user.nickname()
     json_msg = json.dumps(message)
-    q = db.GqlQuery("SELECT user FROM UserOnline WHERE online = 1 AND user != :1", user)
+
+    q = UserOnline.get_online_list()
 
     #Update the list of online user in memcache for others to use
     online_list = q.fetch(20)

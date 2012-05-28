@@ -29,3 +29,10 @@ class MyUser(db.Model):
                 raise construct_warning
             else:
                 return MyUser(id=id, email=q.email)
+
+    """Check if the user exists in MyUser database, if not, add to"""
+    @staticmethod
+    def check_user(user):
+        q = MyUser.all().filter("id =", user.user_id()).get()
+        if not q:
+            MyUser(id=user.user_id(), email=user.email()).put()
