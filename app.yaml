@@ -5,6 +5,10 @@ api_version: 1
 threadsafe: true
 
 handlers:
+- url: /stylesheets
+  static_dir: stylesheets
+- url: /js
+  static_dir: js
 - url: /.*
   script: index.app
 

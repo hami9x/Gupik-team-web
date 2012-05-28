@@ -1,7 +1,6 @@
-<html>
-    <head>
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-        <script type="text/javascript" src="/_ah/channel/jsapi"></script>
+{% extends "baselayout.html" %}
+{% from "onlinelist.html" import onlineList %}
+{% block head %}
         <script type-"text/javascript">
             function onMessage(message) {
                 msg = eval("("+message.data+")");
@@ -12,27 +11,18 @@
                 }
             }
         </script>
-    </head>
-    <body>
+{% endblock %}
+{% block body %}
         <script type="text/javascript">
             channel = new goog.appengine.Channel("{{ token }}");
             socket = channel.open();
-            /*socket.onopen = onOpened;*/
             socket.onmessage = onMessage;
-            /*socket.onclose = onClose;*/
         </script>
 
         {% if user %}
             Chào {{ user.nickname() }}
-            <h2>Online:</h2>
-            <ul id="online-list">
-                <li id="{{ user.user_id() }}">{{ user.nickname() }}</li>
-                {% for online in online_list %}
-                <li id="{{ online.user.user_id() }}">{{ online.user.nickname() }}</li>
-                {% endfor %}
-            </ul>
+            {{ onlineList(user, online_list) }}
         {% else %}
             <a href="{{ login_url }}">Đăng nhập</a>
         {% endif %}
-    </body>
-</html>
+{% endblock body %}

@@ -1,0 +1,14 @@
+<html>
+    <head>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+        <script type="text/javascript" src="/_ah/channel/jsapi"></script>
+        {% block head %}{% endblock %}
+    </head>
+    <body>
+        <script type="text/javascript">
+            channel = new goog.appengine.Channel("{{ token }}");
+            socket = channel.open();
+        </script>
+        {% block body %}{% endblock %}
+    </body>
+</html>

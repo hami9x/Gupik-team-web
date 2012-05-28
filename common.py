@@ -6,7 +6,7 @@ from google.appengine.ext import db
 jinjaEnv = jinja2.Environment(
         loader = jinja2.FileSystemLoader(os.path.dirname(__file__)))
 
-def templateRender(name, values={}):
+def render_template(name, values={}):
     return jinjaEnv.get_template(name).render(values)
 
 class MyUser(db.Model):

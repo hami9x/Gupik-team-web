@@ -3,7 +3,7 @@ from google.appengine.api import users
 from google.appengine.api import channel
 from google.appengine.ext import db
 
-from common import templateRender
+from common import render_template
 from common import MyUser
 
 class UserOnline(db.Model):
@@ -34,4 +34,4 @@ class MainPage(webapp2.RequestHandler):
                         "user": user,
                         "login_url": users.create_login_url("/"),
                     }
-        self.response.out.write(templateRender("main.html", values))
+        self.response.out.write(render_template("mainpage.html", values))
