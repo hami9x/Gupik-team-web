@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Chatbox - The Gupik Team</title>
+<link rel="stylesheet" type="text/css" href="style.css">  
+<script src="js/jquery.js" language="javascript"></script>
+<script src="js/ajax.js" language="javascript"></script>
+<script src="js/him.js" language="javascript"></script>
+<script src="js/function.js" language="javascript"></script>
+
+<script>
+
+$(document).ready(function(){
+	//var loading = "Loading...";
+	var speed = 'fast';
+	$("#do").click(function(){
+		var str = $("#chip_chatbox").serialize();
+		$("#result").fadeOut(speed,function(){
+			//$("#result").fadeIn(speed).html(loading);
+			 validate();
+			$.post('?chip_content', str, function(data){
+				$("#result").fadeOut(speed,function(){
+					$("#result").fadeIn(speed).html(data);
+					document.getElementById('text').value='';
+					});
+				});
+			});
+		});
+	
+});
+</script> 
+</head>
+
+<body>
+
+  <table width="{{ config["width"] }}" align="center">
+ 
+    <tr>
+      <td class="fr">
+    <form id="chip_chatbox" name="chip_chatbox" method="post" action="javascript:function()">
+    <input name="name" type="hidden" id="name" value="{{ user.nickname() }}"/>
+    <input type="submit" name="do" id="do" value="Shout"/>
+    <input name="cbold" id="cbold" type="button" value="B" style="font-weight:bold" onclick="c_style('b');" />
+    <input name="citalic" id="citalic" type="button" value="I" style="font-style:italic" onclick="c_style('i');" />
+    <input name="cunderline" id="cunderline" type="button" value="U" style="text-decoration:underline" onclick="c_style('u');" />
+    <input  onclick="smiliepopup();"  type="button" value="Smile" />
+    
+<select onchange="cfc_upstyle('color');" name="ccolor">
+<option value="">Default</option>
+<option style="background: Gold none repeat scroll 0% 0%; -moz-background-clip: border; -moz-background-origin: padding; -moz-background-inline-policy: continuous;" value="Gold">Gold</option>
+<option style="background: Khaki none repeat scroll 0% 0%; -moz-background-clip: border; -moz-background-origin: padding; -moz-background-inline-policy: continuous;" value="Khaki">Khaki</option>
+<option style="background: Orange none repeat scroll 0% 0%; -moz-background-clip: border; -moz-background-origin: padding; -moz-background-inline-policy: continuous;" value="Orange">Orange</option>
+<option style="background: LightPink none repeat scroll 0% 0%; -moz-background-clip: border; -moz-background-origin: padding; -moz-background-inline-policy: continuous;" value="LightPink">LightPink</option>
+<option style="background: Salmon none repeat scroll 0% 0%; -moz-background-clip: border; -moz-background-origin: padding; -moz-background-inline-policy: continuous;" value="Salmon">Salmon</option>
+<option style="background: Tomato none repeat scroll 0% 0%; -moz-background-clip: border; -moz-background-origin: padding; -moz-background-inline-policy: continuous;" value="Tomato">Tomato</option>
+<option style="background: Red none repeat scroll 0% 0%; -moz-background-clip: border; -moz-background-origin: padding; -moz-background-inline-policy: continuous;" value="Red">Red</option>
+<option style="background: Brown none repeat scroll 0% 0%; -moz-background-clip: border; -moz-background-origin: padding; -moz-background-inline-policy: continuous;" value="Brown">Brown</option>
+<option style="background: Maroon none repeat scroll 0% 0%; -moz-background-clip: border; -moz-background-origin: padding; -moz-background-inline-policy: continuous;" value="Maroon">Maroon</option>
+
+<option style="background: DarkGreen none repeat scroll 0% 0%; -moz-background-clip: border; -moz-background-origin: padding; -moz-background-inline-policy: continuous;" value="DarkGreen">DarkGreen</option>
+<option style="background: DarkCyan none repeat scroll 0% 0%; -moz-background-clip: border; -moz-background-origin: padding; -moz-background-inline-policy: continuous;" value="DarkCyan">DarkCyan</option>
+<option style="background: LightSeaGreen none repeat scroll 0% 0%; -moz-background-clip: border; -moz-background-origin: padding; -moz-background-inline-policy: continuous;" value="LightSeaGreen">LightSeaGreen</option>
+<option style="background: LawnGreen none repeat scroll 0% 0%; -moz-background-clip: border; -moz-background-origin: padding; -moz-background-inline-policy: continuous;" value="LawnGreen">LawnGreen</option>
+<option style="background: MediumSeaGreen none repeat scroll 0% 0%; -moz-background-clip: border; -moz-background-origin: padding; -moz-background-inline-policy: continuous;" value="MediumSeaGreen">MediumSeaGreen</option>
+<option style="background: BlueViolet none repeat scroll 0% 0%; -moz-background-clip: border; -moz-background-origin: padding; -moz-background-inline-policy: continuous;" value="BlueViolet">BlueViolet</option>
+<option style="background: Cyan none repeat scroll 0% 0%; -moz-background-clip: border; -moz-background-origin: padding; -moz-background-inline-policy: continuous;" value="Cyan">Cyan</option>
+<option style="background: Blue none repeat scroll 0% 0%; -moz-background-clip: border; -moz-background-origin: padding; -moz-background-inline-policy: continuous;" value="Blue">Blue</option>
+<option style="background: DodgerBlue none repeat scroll 0% 0%; -moz-background-clip: border; -moz-background-origin: padding; -moz-background-inline-policy: continuous;" value="DodgerBlue">DodgerBlue</option>
+
+<option style="background: LightSkyBlue none repeat scroll 0% 0%; -moz-background-clip: border; -moz-background-origin: padding; -moz-background-inline-policy: continuous;" value="LightSkyBlue">LightSkyBlue</option>
+<option style="background: White none repeat scroll 0% 0%; -moz-background-clip: border; -moz-background-origin: padding; -moz-background-inline-policy: continuous;" value="White">White</option>
+<option style="background: DimGray none repeat scroll 0% 0%; -moz-background-clip: border; -moz-background-origin: padding; -moz-background-inline-policy: continuous;" value="DimGray">DimGray</option>
+<option style="background: DarkGray none repeat scroll 0% 0%; -moz-background-clip: border; -moz-background-origin: padding; -moz-background-inline-policy: continuous;" value="DarkGray">DarkGray</option>
+<option style="background: Black none repeat scroll 0% 0%; -moz-background-clip: border; -moz-background-origin: padding; -moz-background-inline-policy: continuous;" value="Black">Black</option>
+</select>
+
+    <input type="hidden" name="upbold" value="B" />
+    <input type="hidden" name="upitalic" value="I" />
+    <input type="hidden" name="upunderline" value="U" />
+    <input type="hidden" name="IP" value=""" />
+
+    </form>
+      </td>
+    </tr>
+    <tr>
+        <td class="fr_2" height="{{ config["height"] }}" valign="top">
+      	<script>makeRequest('?chip_content',"html","result");</script>
+        <div id="result" style="width:100%;height:{{ config["height"] }}px;overflow:scroll"></div>
+      </td>
+    </tr>
+  </table>
+
+
+</body>
+</html>
+<? }?>
