@@ -1,16 +1,7 @@
 {% extends "baselayout.html" %}
 {% from "onlinelist.html" import onlineList %}
 {% block head %}
-        <script type-"text/javascript">
-            function onMessage(message) {
-                msg = eval("("+message.data+")");
-                if (msg.on === 0) {
-                    $("#online-list > #"+msg.uid).remove();
-                } else {
-                    $("#online-list").append("<li id="+msg.uid+">"+msg.nickname+"</li>");
-                }
-            }
-        </script>
+    <script type="text/javascript" src="js/onlinelist.js"></script>
 {% endblock %}
 {% block body %}
         <script type="text/javascript">

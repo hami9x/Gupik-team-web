@@ -1,8 +1,8 @@
-import logging
 import json
 import webapp2
 from google.appengine.api import users
 from google.appengine.api import channel
+from google.appengine.api import memcache
 from google.appengine.ext import db
 from mainpage import UserOnline
 from common import MyUser
@@ -16,6 +16,7 @@ def reaction(handler, f_status_change):
 
     #Now send message to client
     message = {
+                "type": "onlineStatus",
                 "uid": MyUser.create(user.email()).id,
                 "on": model.online,
             }
@@ -23,7 +24,15 @@ def reaction(handler, f_status_change):
         message["nickname"] = user.nickname()
     json_msg = json.dumps(message)
     q = db.GqlQuery("SELECT user FROM UserOnline WHERE online = 1 AND user != :1", user)
-    for item in q:
+
+    #Update the list of online user in memcache for others to use
+    online_list = q.fetch(20)
+    if memcache.get("online_list") == None:
+        if not memcache.add("online_list", online_list):
+            raise Warning("memcache add doens't work")
+    else:
+        memcache.set("online_list", online_list)
+    for item in online_list:
         channel.send_message(item.user.email(), json_msg)
 
 class DisconnectHandler(webapp2.RequestHandler):

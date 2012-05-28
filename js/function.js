@@ -21,7 +21,7 @@ function c_style(element)
 				document.chip_chatbox.upbold.value = 'B';
 				textstyle.style.fontWeight = 'normal';
 			}
-			
+
 		}
 		else if (element == 'i')
 		{
@@ -37,7 +37,7 @@ function c_style(element)
 				document.chip_chatbox.upitalic.value = 'I';
 				textstyle.style.fontStyle = 'normal';
 			}
-			
+
 		}
 		else if (element == 'u')
 		{
@@ -53,7 +53,7 @@ function c_style(element)
 				document.chip_chatbox.upunderline.value = 'U';
 				textstyle.style.textDecoration = 'none';
 			}
-			
+
 		}
 		else if (element == 'color')
 		{
@@ -65,12 +65,11 @@ function c_style(element)
 	}
 	function validate()
 	{
-		//if(document.chip_chatbox.text.value=='')
-		//{
-		//	alert("Bạn chưa nhập nội dung");
-		//	document.chip_chatbox.text.focus();
-		//	return false;
-		//}	
+        if(document.chip_chatbox.text.value=='')
+        {
+            document.chip_chatbox.text.focus();
+            return false;
+        }
 		if(document.chip_chatbox.text.value.length>255)
 		{
 			alert("Nội dung ko được dài quá 255 ký tự");
@@ -78,9 +77,21 @@ function c_style(element)
 			document.chip_chatbox.text.focus();
 			return false;
 		}
+        return true;
 	}
-	
+
 	function smiliepopup()
 	{
 		window.open("?chip_smilies", "", "location=no,scrollbars=yes,width=500,height=500");
 	}
+
+    var msgHandlers = new Array();
+    function registerMessageHandler(func) {
+        msgHandlers.push(func);
+    }
+
+    function onMessage() {
+        for (var i=0; i<msgHandlers.length(); i++) {
+            (msgHandlers[i])();
+        }
+    }
