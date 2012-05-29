@@ -40,5 +40,8 @@ $(document).ready(function() {
         var str = $("#chip_chatbox").serialize();
         if (!validate()) return;
         $.post('/chatbox', str);
+        var textbox = $("#chip_chatbox > #text");
+        textbox.val("");
+        textbox.focus();
     });
 });
