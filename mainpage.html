@@ -4,12 +4,6 @@
     <script type="text/javascript" src="js/onlinelist.js"></script>
 {% endblock %}
 {% block body %}
-        <script type="text/javascript">
-            channel = new goog.appengine.Channel("{{ token }}");
-            socket = channel.open();
-            socket.onmessage = onMessage;
-        </script>
-
         {% if user %}
             Chào {{ user.nickname() }}
             {{ onlineList(user, online_list) }}

@@ -3,13 +3,33 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
         <script type="text/javascript" src="/_ah/channel/jsapi"></script>
+        <script>
+            var msgHandlers = new Array();
+            function registerMessageHandler(func) {
+                msgHandlers.push(func);
+            }
+
+            function onMessage(message) {
+                alert("message got");
+                for (var i=0; i<msgHandlers.length; i++) {
+                    (msgHandlers[i])(message);
+                }
+            }
+
+            function onError(error) {
+                alert("ERROR!");
+            }
+        </script>
         {% block head %}{% endblock %}
     </head>
     <body>
         <script type="text/javascript">
             channel = new goog.appengine.Channel("{{ token }}");
             socket = channel.open();
-            socket.onMessage = onMessage;
+            /*socket.onopen = onOpened;*/
+            socket.onmessage = onMessage;
+            socket.onerror = onError;
+            /*socket.onclose = onClose;*/
         </script>
         {% block body %}{% endblock %}
     </body>

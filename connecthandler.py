@@ -1,3 +1,4 @@
+import logging
 import json
 import webapp2
 from google.appengine.api import users
@@ -33,8 +34,10 @@ def reaction(handler, f_status_change):
             raise Warning("memcache add doens't work")
     else:
         memcache.set("online_list", online_list)
-    for item in online_list:
-        channel.send_message(item.user.email(), json_msg)
+    for item in q:
+        if user.email() != item.user.email():
+            logging.info("Send msg to: "+item.user.email()+"; "+json_msg)
+            channel.send_message(item.user.email(), json_msg)
 
 class DisconnectHandler(webapp2.RequestHandler):
     def post(self):

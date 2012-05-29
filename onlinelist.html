@@ -1,8 +1,11 @@
 {% macro onlineList(user, online_list) %}
     <h2 class="online-list-header">Đang online:</h2>
             <ul id="online-list">
+                <li id="{{ user.user_id() }}">{{ user.nickname() }}</li>
                 {% for online in online_list %}
-                <li id="{{ online.user.user_id() }}">{{ online.user.nickname() }}</li>
+                    {% if online.user.user_id() != user.user_id() %}
+                        <li id="{{ online.user.user_id() }}">{{ online.user.nickname() }}</li>
+                    {% endif %}
                 {% endfor %}
             </ul>
 {% endmacro %}

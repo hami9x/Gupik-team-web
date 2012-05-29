@@ -1,15 +1,3 @@
-var msgHandlers = new Array();
-    function registerMessageHandler(func) {
-        msgHandlers.push(func);
-    }
-
-    function onMessage(message) {
-        console.log("^^^");
-        for (var i=0; i<msgHandlers.length(); i++) {
-            (msgHandlers[i])(message);
-        }
-    }
-
 function addsmile(kitu)
 {
 	window.opener.document.chip_chatbox.text.value = opener.document.chip_chatbox.text.value + kitu;
