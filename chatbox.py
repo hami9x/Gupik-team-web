@@ -6,7 +6,7 @@ from google.appengine.api import memcache
 from google.appengine.api import channel
 from google.appengine.ext import db
 
-from common import render_template
+import common
 from useronline import UserOnline
 
 class ChatMessage(db.Model):
@@ -17,33 +17,44 @@ class ChatMessage(db.Model):
 class Chatbox(webapp2.RequestHandler):
     def get(self):
         user = users.get_current_user()
+        config = {
+                 "height": 500,
+                 "nmessage": 30, #The number of chat messages in history displayed to the client at first
+            }
+
+
         values = {
-                "user": user,
-                "online_list": UserOnline.get_online_list(),
-                "config": {
-                    "height": 500,
-                    },
+                    "user": user,
+                    "online_list": UserOnline.get_online_list(),
+                    "config": config,
                 }
 
         values2 = {}
         if user:
-            UserOnline.check_user(user)
+            common.user_bootstrap(user)
             token = channel.create_channel(user.email())
+            messages = db.GqlQuery("SELECT * FROM ChatMessage ORDER BY when_created DESC LIMIT %s" % config["nmessage"])
             values2 = {
                     "token": token,
                     "logout_url": users.create_logout_url("/chatbox"),
+                    "messages": messages,
+                    "f_simple_time_str": self.simple_time_str
                 }
         else:
             values2 = {
                     "login_url": users.create_login_url("/chatbox"),
                 }
         values.update(values2)
-        self.response.out.write(render_template("chatbox.html", values))
+        self.response.out.write(common.render_template("chatbox.html", values))
+
+    @staticmethod
+    def simple_time_str(time):
+        return time.strftime("%Y:%m:%d:%H:%M")
 
     def post(self):
         content = self.request.get("text")
         now = datetime.utcnow()
-        time_str = now.strftime("%Y:%m:%d:%H:%M")
+        time_str = self.simple_time_str(now)
         nickname = self.request.get("nickname")
         obj = ChatMessage(when_created=now, content=content, nickname=nickname)
         obj.put()

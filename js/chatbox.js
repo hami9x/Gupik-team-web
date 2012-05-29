@@ -16,9 +16,7 @@ function toLocalTime(str) {
     return year+"/"+month+"/"+day+" "+hour+"h"+min;
 }
 
-function chatbox_onMessage(message) {
-    var msg = eval("("+message.data+")");
-    if (msg.type !== "chatMsg") return;
+function addChatMessage(msg) {
     var timeStr = toLocalTime(msg.time);
     $("#result").prepend('<span class="time">['+timeStr+']</span> '+
                             '<span class="user">'+msg.nickname+'</span>'+
@@ -26,10 +24,16 @@ function chatbox_onMessage(message) {
                             '<br/>');
 }
 
+function chatbox_onMessage(message) {
+    var msg = eval("("+message.data+")");
+    if (msg.type !== "chatMsg") return;
+    addChatMessage(msg)
+}
+
 registerMessageHandler(chatbox_onMessage);
 
-$(document).ready(function(){
-    $("#chip_chatbox > #do").click(function(event){
+$(document).ready(function() {
+    $("#chip_chatbox > #do").click(function(event) {
         event.preventDefault();
         event.stopPropagation();
         var speed = 'fast';

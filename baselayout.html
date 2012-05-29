@@ -14,10 +14,6 @@
                     (msgHandlers[i])(message);
                 }
             }
-
-            function onError(error) {
-                alert("ERROR!");
-            }
         </script>
         {% block head %}{% endblock %}
     </head>
@@ -27,7 +23,6 @@
             socket = channel.open();
             /*socket.onopen = onOpened;*/
             socket.onmessage = onMessage;
-            socket.onerror = onError;
             /*socket.onclose = onClose;*/
         </script>
         {% block body %}{% endblock %}

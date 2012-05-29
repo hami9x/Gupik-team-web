@@ -2,12 +2,17 @@ import os
 import jinja2
 
 from google.appengine.ext import db
+from useronline import UserOnline
 
 jinjaEnv = jinja2.Environment(
         loader = jinja2.FileSystemLoader(os.path.dirname(__file__)))
 
 def render_template(name, values={}):
     return jinjaEnv.get_template(name).render(values)
+
+def user_bootstrap(user):
+    UserOnline.check_user(user)
+    MyUser.check_user(user)
 
 class MyUser(db.Model):
     id = db.StringProperty()

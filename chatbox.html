@@ -8,6 +8,22 @@
 {% endblock %}
 
 {% block body %}
+    <script>
+        $(document).ready(function() {
+          var arr = [
+            {% for item in messages %}
+                {
+                    time: "{{ f_simple_time_str(item.when_created) }}",
+                    nickname: "{{ item.nickname }}",
+                    content: "{{ item.content }}",
+                },
+            {% endfor %}
+          ];
+          for (var i=arr.length-1; i>=0; i--) {
+              addChatMessage(arr[i]);
+          }
+        });
+    </script>
   <table width="{{ config["width"] }}" align="center">
     <tr>
       <td class="fr_top">
