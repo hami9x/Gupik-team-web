@@ -7,7 +7,7 @@ from google.appengine.api import channel
 from google.appengine.ext import db
 
 import common
-import parser
+import chatparser
 from useronline import UserOnline
 
 class ChatMessage(db.Model):
@@ -62,8 +62,8 @@ class Chatbox(webapp2.RequestHandler):
         return time.strftime("%Y:%m:%d:%H:%M")
 
     def post(self):
-        content = parser.parse_message(self.request.get("text"))
-        content = parser.decorate_message(content, self.request)
+        content = chatparser.parse_message(self.request.get("text"))
+        content = chatparser.decorate_message(content, self.request)
         now = datetime.utcnow()
         time_str = self.simple_time_str(now)
         nickname = self.request.get("nickname")

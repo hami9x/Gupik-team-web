@@ -1,5 +1,3 @@
-import logging
-from pprint import pformat
 import cgi
 import json
 from google.appengine.api import memcache
@@ -23,7 +21,6 @@ def parse_emoticon(message):
     for emo in reversed(config):
         img = '<img src="%s"/>' % emo[1]
         message = message.replace(cgi.escape(emo[0]), img)
-        logging.info(emo[0])
     return message
 
 
