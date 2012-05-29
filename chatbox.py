@@ -1,6 +1,5 @@
 import json
 from datetime import datetime
-from cgi import escape
 import webapp2
 from google.appengine.api import users
 from google.appengine.api import memcache
@@ -8,6 +7,7 @@ from google.appengine.api import channel
 from google.appengine.ext import db
 
 import common
+import parser
 from useronline import UserOnline
 
 class ChatMessage(db.Model):
@@ -34,12 +34,20 @@ class Chatbox(webapp2.RequestHandler):
         if user:
             common.user_bootstrap(user)
             token = channel.create_channel(user.email())
-            messages = db.GqlQuery("SELECT * FROM ChatMessage ORDER BY when_created DESC LIMIT %s" % config["nmessage"])
+            q = db.GqlQuery("SELECT * FROM ChatMessage ORDER BY when_created DESC LIMIT %s" % config["nmessage"])
+            messages = []
+            for msg in q:
+                messages.append({
+                    "time": self.simple_time_str(msg.when_created),
+                    "nickname": msg.nickname,
+                    "content": msg.content,
+                    })
+            json_messages = json.dumps(messages)
+
             values2 = {
                     "token": token,
                     "logout_url": users.create_logout_url("/chatbox"),
-                    "messages": messages,
-                    "f_simple_time_str": self.simple_time_str,
+                    "messages": json_messages,
                     "online_list": UserOnline.get_online_list(),
                 }
         else:
@@ -54,7 +62,8 @@ class Chatbox(webapp2.RequestHandler):
         return time.strftime("%Y:%m:%d:%H:%M")
 
     def post(self):
-        content = escape(self.request.get("text"))
+        content = parser.parse_message(self.request.get("text"))
+        content = parser.decorate_message(content, self.request)
         now = datetime.utcnow()
         time_str = self.simple_time_str(now)
         nickname = self.request.get("nickname")

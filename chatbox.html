@@ -11,18 +11,10 @@
 {% block body %}
     <script>
         $(document).ready(function() {
-          var arr = [
-            {% for item in messages %}
-                {
-                    time: "{{ f_simple_time_str(item.when_created) }}",
-                    nickname: "{{ item.nickname }}",
-                    content: "{{ item.content }}",
-                },
-            {% endfor %}
-          ];
-          for (var i=arr.length-1; i>=0; i--) {
-              addChatMessage(arr[i]);
-          }
+            var arr = eval({{messages}});
+            for (var i=arr.length-1; i>=0; i--) {
+                addChatMessage(arr[i]);
+            }
         });
     </script>
 
@@ -55,7 +47,7 @@
         <input name="citalic" id="citalic" type="button" value="I" style="font-style:italic" onclick="c_style('i');" />
         <input name="cunderline" id="cunderline" type="button" value="U" style="text-decoration:underline" onclick="c_style('u');" />
         <input  onclick="smiliepopup();"  type="button" value="Smile" />
-        <select onchange="cfc_upstyle('color');" name="ccolor">
+        <select name="ccolor">
             <option value="">Default</option>
             <option style="background: Gold none repeat scroll 0% 0%; -moz-background-clip: border; -moz-background-origin: padding; -moz-background-inline-policy: continuous;" value="Gold">Gold</option>
             <option style="background: Khaki none repeat scroll 0% 0%; -moz-background-clip: border; -moz-background-origin: padding; -moz-background-inline-policy: continuous;" value="Khaki">Khaki</option>

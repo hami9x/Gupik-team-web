@@ -38,6 +38,7 @@ $(document).ready(function() {
         event.stopPropagation();
         var speed = 'fast';
         var str = $("#chip_chatbox").serialize();
+        console.log(str);
         if (!validate()) return;
         $.post('/chatbox', str);
         var textbox = $("#chip_chatbox > #text");
