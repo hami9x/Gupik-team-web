@@ -1,5 +1,6 @@
 import json
 from datetime import datetime
+from cgi import escape
 import webapp2
 from google.appengine.api import users
 from google.appengine.api import memcache
@@ -53,7 +54,7 @@ class Chatbox(webapp2.RequestHandler):
         return time.strftime("%Y:%m:%d:%H:%M")
 
     def post(self):
-        content = self.request.get("text")
+        content = escape(self.request.get("text"))
         now = datetime.utcnow()
         time_str = self.simple_time_str(now)
         nickname = self.request.get("nickname")
