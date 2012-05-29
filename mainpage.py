@@ -9,7 +9,7 @@ class MainPage(webapp2.RequestHandler):
     def get(self):
         user = users.get_current_user()
         if user:
-            common.user_bootstrap()
+            common.user_bootstrap(user)
             token = channel.create_channel(user.email())
             values = {
                         "user": user,
