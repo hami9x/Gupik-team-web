@@ -1,4 +1,5 @@
 {% extends "baselayout.html" %}
+{% from "onlinelist.html" import onlineList %}
 {% block head %}
 <title>Chatbox - The Gupik Team</title>
 <link rel="stylesheet" type="text/css" href="stylesheets/style.css">  
@@ -24,6 +25,10 @@
           }
         });
     </script>
+
+    {% if user %}{{ onlineList(user, online_list) }}{% endif %}
+    <br/>
+
   <table width="{{ config["width"] }}" align="center">
     <tr>
       <td class="fr_top">

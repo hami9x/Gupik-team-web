@@ -38,7 +38,8 @@ class Chatbox(webapp2.RequestHandler):
                     "token": token,
                     "logout_url": users.create_logout_url("/chatbox"),
                     "messages": messages,
-                    "f_simple_time_str": self.simple_time_str
+                    "f_simple_time_str": self.simple_time_str,
+                    "online_list": UserOnline.get_online_list(),
                 }
         else:
             values2 = {
