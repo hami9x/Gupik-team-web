@@ -10,7 +10,6 @@
             }
 
             function onMessage(message) {
-                alert("message got");
                 for (var i=0; i<msgHandlers.length; i++) {
                     (msgHandlers[i])(message);
                 }

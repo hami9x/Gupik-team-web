@@ -29,7 +29,7 @@
         <input name="text" onkeyup="validate();" type="text" id="text"
             {% if not user %}disabled="disabled" value="Bạn phải đăng nhập mới chat được"{% endif %}
         size="35"/>
-        <input type="button" name="do" id="do" value="Shout"/>
+        <input type="submit" name="do" id="do" value="Shout"/>
         <input name="cbold" id="cbold" type="button" value="B" style="font-weight:bold" onclick="c_style('b');" />
         <input name="citalic" id="citalic" type="button" value="I" style="font-style:italic" onclick="c_style('i');" />
         <input name="cunderline" id="cunderline" type="button" value="U" style="text-decoration:underline" onclick="c_style('u');" />
